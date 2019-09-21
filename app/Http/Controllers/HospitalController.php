@@ -80,6 +80,26 @@ class HospitalController extends Controller
      */
     public function destroy(Hospital $hospital)
     {
-        //
+        try{
+            $response = array(
+                'status'=>"Failed",
+                'msg'=>'',
+                'is_success'=>false,
+                'data'=>''
+            );
+            $hospital = Hospital::find($id);
+            $hospital->delete();
+            $response['status'] = "Success";
+            $response['msg'] = "Delete hospital";
+            $response['is_success'] = true;
+            return response()->json($response);
+        }
+        catch(Exception $e)
+        {
+            $response['status'] = "Failed";
+            $response['msg'] = $e->getMessage();
+            $response['is_success'] = false;
+            return response()->json($response); 
+		}
     }
 }
