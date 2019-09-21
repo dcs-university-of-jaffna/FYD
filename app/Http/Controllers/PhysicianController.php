@@ -14,7 +14,10 @@ class PhysicianController extends Controller
      */
     public function index()
     {
-        //
+        $physicians=Physicians::all();
+
+        return View::make('physicians.index')
+            ->with('physicians', $physicians);
     }
 
     /**
@@ -35,7 +38,32 @@ class PhysicianController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $response = array(
+                'status'=>"Failed",
+                'msg'=>'',
+                'is_success'=>false,
+                'data'=>''
+            );
+            $physician = new physician();
+
+                $physician->id = $request->id;
+                $physician->doctor_id = $request->doctor_id;
+
+                $physician->save();
+            $response['status'] = "Success";
+            $response['msg'] = "Add physician";
+            $response['is_success'] = true;
+            $response['data'] =$physician;
+            return response()->json($response);
+        }
+        catch(Exception $e)
+        {
+            $response['status'] = "Failed";
+            $response['msg'] = $e->getMessage();
+            $response['is_success'] = false;
+            return response()->json($response); 
+        }
     }
 
     /**
@@ -44,9 +72,29 @@ class PhysicianController extends Controller
      * @param  \App\Physician  $physician
      * @return \Illuminate\Http\Response
      */
-    public function show(Physician $physician)
+    public function show ($id)
     {
-        //
+        try{
+            $response = array(
+                'status'=>"Failed",
+                'msg'=>'',
+                'is_success'=>false,
+                'data'=>''
+            );
+            $physician = Physician::find($id);
+            $response['status'] = "Success";
+            $response['msg'] = "Get one physician";
+            $response['is_success'] = true;
+            $response['data'] = array('physician-'=>$physician);
+            return response()->json($response);
+        }
+        catch(Exception $e)
+        {
+            $response['status'] = "Failed";
+            $response['msg'] = $e->getMessage();
+            $response['is_success'] = false;
+            return response()->json($response); 
+        }
     }
 
     /**
@@ -67,9 +115,34 @@ class PhysicianController extends Controller
      * @param  \App\Physician  $physician
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Physician $physician)
+    public function update(Request $request, $id)
     {
-        //
+        try{
+            $response = array(
+                'status'=>"Failed",
+                'msg'=>'',
+                'is_success'=>false,
+                'data'=>''
+            );
+            $physician = Physician::find($id);
+
+            $physician->id = $request->id;
+            $physician->doctor_id = $request->doctor_id;
+
+            $physician->save();
+            $response['status'] = "Success";
+            $response['msg'] = "Update physician";
+            $response['is_success'] = true;
+            $response['data'] =$physician;
+            return response()->json($response);
+        }
+        catch(Exception $e)
+        {
+            $response['status'] = "Failed";
+            $response['msg'] = $e->getMessage();
+            $response['is_success'] = false;
+            return response()->json($response); 
+        }
     }
 
     /**
@@ -78,8 +151,28 @@ class PhysicianController extends Controller
      * @param  \App\Physician  $physician
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Physician $physician)
+    public function destroy($id)
     {
-        //
+        try{
+            $response = array(
+                'status'=>"Failed",
+                'msg'=>'',
+                'is_success'=>false,
+                'data'=>''
+            );
+            $physician = Physician::find($id);
+            $physician->delete();
+            $response['status'] = "Success";
+            $response['msg'] = "Delete physician";
+            $response['is_success'] = true;
+            return response()->json($response);
+        }
+        catch(Exception $e)
+        {
+            $response['status'] = "Failed";
+            $response['msg'] = $e->getMessage();
+            $response['is_success'] = false;
+            return response()->json($response); 
+        }
     }
 }
