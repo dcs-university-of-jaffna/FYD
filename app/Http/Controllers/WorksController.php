@@ -14,10 +14,10 @@ class WorksController extends Controller
      */
     public function index()
     {
-        $hospitals=Hospitals::all();
+        $works=Works::all();
 
-        return View::make('hospitals.index')
-            ->with('hospitals', $hospitals);
+        return View::make('works.index')
+            ->with('works', $works);
     }
 
     /**
@@ -45,24 +45,19 @@ class WorksController extends Controller
                 'is_success'=>false,
                 'data'=>''
             );
-            $hospital = new hospital();
+            $works = new works();
 
-                $hospital->id = $request->id;
-                $hospital->hospital_name = $request->doctor_name;
-				$hospital->telephone_no= $request->telephone_no;
-				$hospital->licence_id = $request->licence_id;
-                $hospital->open_time = $request->open_time;
-                $hospital->close_time = $request->close_time;
-				$hospital->pharmacy = $request->pharmacy;
-                $hospital->scan = $request->scan;
-                $hospital->x_ray = $request->x_ray;
-				
+                $works->id = $request->id;
+                $works->hospital_id = $request->hospital_id;
+                $works->doctor_id = $request->doctor_id;
+				$works->working_time= $request->working_time;
+                $works->working_days = $request->working_days;
 
-                $hospital->save();
+                $works->save();
             $response['status'] = "Success";
-            $response['msg'] = "Add hospital";
+            $response['msg'] = "Add work";
             $response['is_success'] = true;
-            $response['data'] =$hospital;
+            $response['data'] =$works;
             return response()->json($response);
         }
         catch(Exception $e)
@@ -89,11 +84,11 @@ class WorksController extends Controller
                 'is_success'=>false,
                 'data'=>''
             );
-            $hospital = Hospital::find($id);
+            $works = Works::find($id);
             $response['status'] = "Success";
-            $response['msg'] = "Get one hospital";
+            $response['msg'] = "Get one work";
             $response['is_success'] = true;
-            $response['data'] = array('hospital'=>$hospital);
+            $response['data'] = array('works'=>$works);
             return response()->json($response);
         }
         catch(Exception $e)
@@ -132,24 +127,20 @@ class WorksController extends Controller
                 'is_success'=>false,
                 'data'=>''
             );
-            $hospital = Hospital::find($id);
-			
-			$hospital->id = $request->id;
-            $hospital->hospital_name = $request->doctor_name;
-			$hospital->telephone_no= $request->telephone_no;
-			$hospital->licence_id = $request->licence_id;
-			$hospital->open_time = $request->open_time;
-			$hospital->close_time = $request->close_time;
-			$hospital->pharmacy = $request->pharmacy;
-			$hospital->scan = $request->scan;
-			$hospital->x_ray = $request->x_ray;	
-            
+            $works = Works::find($id);
 
-            $hospital->save();
+				$works->id = $request->id;
+                $works->hospital_id = $request->hospital_id;
+                $works->doctor_id = $request->doctor_id;
+				$works->working_time= $request->working_time;
+                $works->working_days = $request->working_days;
+
+                $works->save();
+				
             $response['status'] = "Success";
-            $response['msg'] = "Update hospital";
+            $response['msg'] = "Update work";
             $response['is_success'] = true;
-            $response['data'] =$hospital;
+            $response['data'] =$doctor;
             return response()->json($response);
         }
         catch(Exception $e)
@@ -176,10 +167,10 @@ class WorksController extends Controller
                 'is_success'=>false,
                 'data'=>''
             );
-            $hospital = Hospital::find($id);
-            $hospital->delete();
+            $works = Works::find($id);
+            $works->delete();
             $response['status'] = "Success";
-            $response['msg'] = "Delete hospital";
+            $response['msg'] = "Delete work";
             $response['is_success'] = true;
             return response()->json($response);
         }
@@ -189,6 +180,6 @@ class WorksController extends Controller
             $response['msg'] = $e->getMessage();
             $response['is_success'] = false;
             return response()->json($response); 
-		}
+        }
     }
 }
