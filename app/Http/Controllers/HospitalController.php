@@ -14,7 +14,10 @@ class HospitalController extends Controller
      */
     public function index()
     {
-        //
+        $hospitals=Hospitals::all();
+
+        return View::make('hospitals.index')
+            ->with('hospitals', $hospitals);
     }
 
     /**
@@ -35,7 +38,40 @@ class HospitalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $response = array(
+                'status'=>"Failed",
+                'msg'=>'',
+                'is_success'=>false,
+                'data'=>''
+            );
+            $hospital = new hospital();
+
+                $hospital->id = $request->id;
+                $hospital->hospital_name = $request->doctor_name;
+				$hospital->telephone_no= $request->telephone_no;
+				$hospital->licence_id = $request->licence_id;
+                $hospital->open_time = $request->open_time;
+                $hospital->close_time = $request->close_time;
+				$hospital->pharmacy = $request->pharmacy;
+                $hospital->scan = $request->scan;
+                $hospital->x_ray = $request->x_ray;
+				
+
+                $hospital->save();
+            $response['status'] = "Success";
+            $response['msg'] = "Add hospital";
+            $response['is_success'] = true;
+            $response['data'] =$hospital;
+            return response()->json($response);
+        }
+        catch(Exception $e)
+        {
+            $response['status'] = "Failed";
+            $response['msg'] = $e->getMessage();
+            $response['is_success'] = false;
+            return response()->json($response); 
+        }
     }
 
     /**
@@ -44,9 +80,29 @@ class HospitalController extends Controller
      * @param  \App\Hospital  $hospital
      * @return \Illuminate\Http\Response
      */
-    public function show(Hospital $hospital)
+    public function show( $id)
     {
-        //
+        try{
+            $response = array(
+                'status'=>"Failed",
+                'msg'=>'',
+                'is_success'=>false,
+                'data'=>''
+            );
+            $hospital = Hospital::find($id);
+            $response['status'] = "Success";
+            $response['msg'] = "Get one hospital";
+            $response['is_success'] = true;
+            $response['data'] = array('hospital'=>$hospital);
+            return response()->json($response);
+        }
+        catch(Exception $e)
+        {
+            $response['status'] = "Failed";
+            $response['msg'] = $e->getMessage();
+            $response['is_success'] = false;
+            return response()->json($response); 
+        }
     }
 
     /**
@@ -67,9 +123,42 @@ class HospitalController extends Controller
      * @param  \App\Hospital  $hospital
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Hospital $hospital)
+    public function update(Request $request,  $id)
     {
-        //
+        try{
+            $response = array(
+                'status'=>"Failed",
+                'msg'=>'',
+                'is_success'=>false,
+                'data'=>''
+            );
+            $hospital = Hospital::find($id);
+			
+			$hospital->id = $request->id;
+            $hospital->hospital_name = $request->doctor_name;
+			$hospital->telephone_no= $request->telephone_no;
+			$hospital->licence_id = $request->licence_id;
+			$hospital->open_time = $request->open_time;
+			$hospital->close_time = $request->close_time;
+			$hospital->pharmacy = $request->pharmacy;
+			$hospital->scan = $request->scan;
+			$hospital->x_ray = $request->x_ray;	
+            
+
+            $hospital->save();
+            $response['status'] = "Success";
+            $response['msg'] = "Update hospital";
+            $response['is_success'] = true;
+            $response['data'] =$hospital;
+            return response()->json($response);
+        }
+        catch(Exception $e)
+        {
+            $response['status'] = "Failed";
+            $response['msg'] = $e->getMessage();
+            $response['is_success'] = false;
+            return response()->json($response); 
+        }
     }
 
     /**
