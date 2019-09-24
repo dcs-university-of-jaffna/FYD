@@ -166,7 +166,7 @@ class DoctorController extends Controller
             $doctor = Doctor::find($id);
             $doctor->delete();
             $response['status'] = "Success";
-            $response['msg'] = "Delect doctor";
+            $response['msg'] = "Delete doctor";
             $response['is_success'] = true;
             return response()->json($response);
         }
