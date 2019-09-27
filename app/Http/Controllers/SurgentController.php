@@ -14,7 +14,10 @@ class SurgentController extends Controller
      */
     public function index()
     {
-        //
+         $surgents=Surgents::all();
+
+        return View::make('surgents.index')
+            ->with('surgents', $surgents);
     }
 
     /**
@@ -35,7 +38,33 @@ class SurgentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         try{
+            $response = array(
+                'status'=>"Failed",
+                'msg'=>'',
+                'is_success'=>false,
+                'data'=>''
+            );
+            $surgent = new surgent();
+
+                $surgent->id = $request->id;
+                $surgent->doctor_id = $request->doctor_id;
+                $surgent->specialist = $request->specialist;
+
+                $surgent->save();
+            $response['status'] = "Success";
+            $response['msg'] = "Add surgent";
+            $response['is_success'] = true;
+            $response['data'] =$surgent;
+            return response()->json($response);
+        }
+        catch(Exception $e)
+        {
+            $response['status'] = "Failed";
+            $response['msg'] = $e->getMessage();
+            $response['is_success'] = false;
+            return response()->json($response); 
+        }
     }
 
     /**
@@ -44,9 +73,29 @@ class SurgentController extends Controller
      * @param  \App\Surgent  $surgent
      * @return \Illuminate\Http\Response
      */
-    public function show(Surgent $surgent)
+    public function show($id)
     {
-        //
+        try{
+            $response = array(
+                'status'=>"Failed",
+                'msg'=>'',
+                'is_success'=>false,
+                'data'=>''
+            );
+            $surgent = Surgent::find($id);
+            $response['status'] = "Success";
+            $response['msg'] = "Get one surgent";
+            $response['is_success'] = true;
+            $response['data'] = array('surgent-'=>$surgent);
+            return response()->json($response);
+        }
+        catch(Exception $e)
+        {
+            $response['status'] = "Failed";
+            $response['msg'] = $e->getMessage();
+            $response['is_success'] = false;
+            return response()->json($response); 
+        }
     }
 
     /**
@@ -67,9 +116,35 @@ class SurgentController extends Controller
      * @param  \App\Surgent  $surgent
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Surgent $surgent)
+    public function update(Request $request,  $id)
     {
-        //
+        try{
+            $response = array(
+                'status'=>"Failed",
+                'msg'=>'',
+                'is_success'=>false,
+                'data'=>''
+            );
+            $surgent = Surgent::find($id);
+
+            $surgent->id = $request->id;
+            $surgent->doctor_id = $request->doctor_id;
+            $surgent->specialist = $request->specialist;
+
+            $surgent->save();
+            $response['status'] = "Success";
+            $response['msg'] = "Update surgent";
+            $response['is_success'] = true;
+            $response['data'] =$surgent;
+            return response()->json($response);
+        }
+        catch(Exception $e)
+        {
+            $response['status'] = "Failed";
+            $response['msg'] = $e->getMessage();
+            $response['is_success'] = false;
+            return response()->json($response); 
+        }
     }
 
     /**
@@ -78,8 +153,28 @@ class SurgentController extends Controller
      * @param  \App\Surgent  $surgent
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Surgent $surgent)
+    public function destroy($id)
     {
-        //
+        try{
+            $response = array(
+                'status'=>"Failed",
+                'msg'=>'',
+                'is_success'=>false,
+                'data'=>''
+            );
+            $surgent = Surgent::find($id);
+            $surgent->delete();
+            $response['status'] = "Success";
+            $response['msg'] = "Delete surgent";
+            $response['is_success'] = true;
+            return response()->json($response);
+        }
+        catch(Exception $e)
+        {
+            $response['status'] = "Failed";
+            $response['msg'] = $e->getMessage();
+            $response['is_success'] = false;
+            return response()->json($response); 
+        }
     }
 }
